@@ -23,6 +23,7 @@ public class CloudgatewayApplication {
 				.routes()
 					.route(r -> r.path("/clients/**").uri("lb://client-microservice")) //redirect to the load balacing
 					.route(r -> r.path("/creditcards/**").uri("lb://creditcard-microservice"))
+					.route(r -> r.path("/creditevaluator/**").uri("lb://creditevaluator-microservice"))
 				.build();
 	}
 
