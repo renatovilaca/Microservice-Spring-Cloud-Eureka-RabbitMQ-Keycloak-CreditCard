@@ -1,0 +1,14 @@
+
+spring:
+  application:
+    name: client-microservice
+
+server:
+  port: 0 #ramdom port
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
