@@ -2,9 +2,12 @@ package io.github.renatovilaca.creditevaluator.domain.model;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 @Data
-public class ClientInfo {
+public class CreditCard {
     private Long id;
     private String name;
-    private Integer age;
+    private String brand;
+    private BigDecimal initialLimit;
 }
