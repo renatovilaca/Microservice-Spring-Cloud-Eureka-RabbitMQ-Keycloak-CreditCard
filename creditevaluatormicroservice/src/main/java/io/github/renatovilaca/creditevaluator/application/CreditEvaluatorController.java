@@ -1,8 +1,11 @@
 package io.github.renatovilaca.creditevaluator.application;
 
+import io.github.renatovilaca.creditevaluator.application.exception.ClientInfoNotFoundException;
+import io.github.renatovilaca.creditevaluator.application.exception.MicroserviceErrorException;
 import io.github.renatovilaca.creditevaluator.domain.model.ClientStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,10 +27,16 @@ public class CreditEvaluatorController {
     }
 
     @GetMapping(value = "client-status", params = "cpf")
-    public ResponseEntity<ClientStatus> getClientStatus(@RequestParam("cpf") String cpf){
+    public ResponseEntity getClientStatus(@RequestParam("cpf") String cpf){
 
-        ClientStatus clientStatus = creditEvaluatorService.getClientStatus(cpf);
-        return ResponseEntity.ok(clientStatus);
+        try {
+            ClientStatus clientStatus = creditEvaluatorService.getClientStatus(cpf);
+            return ResponseEntity.ok(clientStatus);
+        } catch (ClientInfoNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch (MicroserviceErrorException e) {
+            return ResponseEntity.status(HttpStatus.resolve(e.getStatus())).body(e.getMessage());
+        }
     }
 
 }
