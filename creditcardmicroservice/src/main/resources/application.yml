@@ -19,4 +19,4 @@ eureka:
 
 mq:
   queues:
-    credit-card-issuance: credit-card-issuance
+    credit-card-issuance-queue: credit-card-issuance

@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 public class CreditCardClientResponse {
     private String name;
     private String brand;
-    private BigDecimal limit;
+    private BigDecimal releasedLimit;
 
     public static CreditCardClientResponse fromModel(CreditCardClient model){
         return new CreditCardClientResponse(
