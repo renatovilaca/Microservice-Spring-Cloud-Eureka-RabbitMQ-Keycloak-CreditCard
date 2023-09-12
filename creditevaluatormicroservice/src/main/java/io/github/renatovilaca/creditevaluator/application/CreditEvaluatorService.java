@@ -2,10 +2,12 @@ package io.github.renatovilaca.creditevaluator.application;
 
 import feign.FeignException;
 import io.github.renatovilaca.creditevaluator.application.exception.ClientInfoNotFoundException;
+import io.github.renatovilaca.creditevaluator.application.exception.CreditCardIssuanceErrorException;
 import io.github.renatovilaca.creditevaluator.application.exception.MicroserviceErrorException;
 import io.github.renatovilaca.creditevaluator.domain.model.*;
 import io.github.renatovilaca.creditevaluator.infra.clients.ClientResourceClient;
 import io.github.renatovilaca.creditevaluator.infra.clients.CreditCardResourceClient;
+import io.github.renatovilaca.creditevaluator.infra.messagequeue.CreditCardIssuancePublisher;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,6 +24,8 @@ public class CreditEvaluatorService {
 
     private final ClientResourceClient clientResourceClient;
     private final CreditCardResourceClient creditCardResourceClient;
+    private final CreditCardIssuancePublisher creditCardIssuancePublisher;
+
     public ClientStatus getClientStatus(String cpf) throws ClientInfoNotFoundException, MicroserviceErrorException {
 
         try {
@@ -78,6 +83,16 @@ public class CreditEvaluatorService {
                 throw new ClientInfoNotFoundException();
 
             throw new MicroserviceErrorException(e.getMessage(), status);
+        }
+    }
+
+    public CreditCardIssuanceRequestTicket requestCreditCardIssuance(CreditCardIssuanceRequestInfo data) {
+        try {
+            creditCardIssuancePublisher.requestCreditCard(data);
+            var ticket = UUID.randomUUID().toString();
+            return new CreditCardIssuanceRequestTicket(ticket);
+        } catch (Exception e){
+            throw new CreditCardIssuanceErrorException(e.getMessage());
         }
     }
 

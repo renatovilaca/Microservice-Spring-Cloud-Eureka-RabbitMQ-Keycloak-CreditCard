@@ -1,10 +1,9 @@
 package io.github.renatovilaca.creditevaluator.application;
 
 import io.github.renatovilaca.creditevaluator.application.exception.ClientInfoNotFoundException;
+import io.github.renatovilaca.creditevaluator.application.exception.CreditCardIssuanceErrorException;
 import io.github.renatovilaca.creditevaluator.application.exception.MicroserviceErrorException;
-import io.github.renatovilaca.creditevaluator.domain.model.ClientEvaluationResponse;
-import io.github.renatovilaca.creditevaluator.domain.model.ClientStatus;
-import io.github.renatovilaca.creditevaluator.domain.model.EvaluationInfo;
+import io.github.renatovilaca.creditevaluator.domain.model.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -38,8 +37,8 @@ public class CreditEvaluatorController {
         }
     }
 
-    @PostMapping
-    public ResponseEntity getEvaluation(@RequestBody EvaluationInfo evaluationInfo) {
+    @PostMapping("request-credit-card-evaluation")
+    public ResponseEntity requestEvaluation(@RequestBody EvaluationInfo evaluationInfo) {
         try {
             ClientEvaluationResponse clientEvaluationResponse = creditEvaluatorService.getEvaluation(evaluationInfo.getCpf(), evaluationInfo.getIncome());
             return ResponseEntity.ok(clientEvaluationResponse);
@@ -47,6 +46,17 @@ public class CreditEvaluatorController {
             return ResponseEntity.notFound().build();
         } catch (MicroserviceErrorException e) {
             return ResponseEntity.status(HttpStatus.resolve(e.getStatus())).body(e.getMessage());
+        }
+    }
+
+    @PostMapping("request-credit-card")
+    public ResponseEntity requestCreditCard(@RequestBody CreditCardIssuanceRequestInfo data){
+        try {
+            CreditCardIssuanceRequestTicket creditCardIssuanceRequestTicket = creditEvaluatorService.requestCreditCardIssuance(data);
+            return ResponseEntity.ok(creditCardIssuanceRequestTicket);
+        } catch (CreditCardIssuanceErrorException e){
+            log.error(e.getMessage());
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
 
