@@ -1,3 +1,15 @@
+#Set maven version
+FROM maven:3.8.5-openjdk-11 as build
+
+#Set work folder
+WORKDIR /app
+
+#Copy all project to the conteiner
+COPY . .
+
+#Buil the app
+RUN mvn clean package -DskipTests
+
 #Define jdk version
 FROM openjdk:11
 
@@ -5,7 +17,7 @@ FROM openjdk:11
 WORKDIR /app
 
 #Copy app file
-COPY ./target/eurekaserver-0.0.1-SNAPSHOT.jar app.jar
+COPY --from=build ./app/target/*.jar ./app.jar
 
 #Expose the external port
 EXPOSE 8761
