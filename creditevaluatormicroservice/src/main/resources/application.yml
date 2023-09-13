@@ -21,3 +21,13 @@ eureka:
 mq:
   queues:
     credit-card-issuance-queue: credit-card-issuance
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+logging:
+  file:
+    name: ./logs/creditevaluator-microservice.log

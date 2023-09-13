@@ -33,6 +33,7 @@ public class CreditEvaluatorController {
         } catch (ClientInfoNotFoundException e) {
             return ResponseEntity.notFound().build();
         } catch (MicroserviceErrorException e) {
+            log.error("Error on request client status: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.resolve(e.getStatus())).body(e.getMessage());
         }
     }
@@ -45,6 +46,7 @@ public class CreditEvaluatorController {
         } catch (ClientInfoNotFoundException e) {
             return ResponseEntity.notFound().build();
         } catch (MicroserviceErrorException e) {
+            log.error("Error on request credit card evaluation: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.resolve(e.getStatus())).body(e.getMessage());
         }
     }
@@ -55,7 +57,7 @@ public class CreditEvaluatorController {
             CreditCardIssuanceRequestTicket creditCardIssuanceRequestTicket = creditEvaluatorService.requestCreditCardIssuance(data);
             return ResponseEntity.ok(creditCardIssuanceRequestTicket);
         } catch (CreditCardIssuanceErrorException e){
-            log.error(e.getMessage());
+            log.error("Error on request credit card: {}", e.getMessage());
             return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }

@@ -37,7 +37,7 @@ public class CreditCardIssuanceSubscriber {
             creditCardClientRepository.save(creditCardClient);
 
         } catch (Exception e){
-            log.error(e.getMessage());
+            log.error("Error on receive credit card issuance request: {}", e.getMessage());
         }
 
     }
