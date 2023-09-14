@@ -3,7 +3,7 @@ spring:
   application:
     name: creditevaluator-microservice
   rabbitmq:
-    host: localhost
+    host: ${RABBITMQ_SERVER}
     port: 5672
     username: guest
     password: guest
@@ -14,7 +14,7 @@ server:
 eureka:
   client:
     service-url:
-      defaultZone: http://eureka:eureka@localhost:8761/eureka
+      defaultZone: http://eureka:eureka@${EUREKA_SERVER}:8761/eureka
   instance:
     instance-id: ${spring.application.name}:${spring.cloud.client.hostname}:${spring.application.instance_id:${random.value}}
 
