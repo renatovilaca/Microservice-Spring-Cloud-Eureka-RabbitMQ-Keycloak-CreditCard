@@ -1,5 +1,5 @@
 #Set maven version
-FROM maven:3.8.5-openjdk-11 as build
+FROM maven:3.8.5-openjdk-17 as build
 
 #Set work folder
 WORKDIR /app
@@ -11,7 +11,7 @@ COPY . .
 RUN mvn clean package -DskipTests
 
 #Define jdk version
-FROM openjdk:11
+FROM openjdk:17
 
 #Set work folder
 WORKDIR /app
