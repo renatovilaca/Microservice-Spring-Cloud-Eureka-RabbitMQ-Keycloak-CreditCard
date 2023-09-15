@@ -11,7 +11,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8081/realms/creditcardsystemrealm
+          issuer-uri: http://${KEYCLOAK_SERVER}:${KEYCLOAK_PORT}/realms/creditcardsystemrealm
 
 server:
   port: 8080
@@ -21,5 +21,5 @@ eureka:
     fetch-registry: true
     register-with-eureka: true
     service-url:
-      defaultZone: http://eureka:eureka@localhost:8761/eureka
+      defaultZone: http://eureka:eureka@${EUREKA_SERVER}:8761/eureka
 

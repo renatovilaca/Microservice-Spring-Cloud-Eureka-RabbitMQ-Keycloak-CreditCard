@@ -23,5 +23,5 @@ COPY --from=build ./app/target/*.jar ./app.jar
 EXPOSE 8761
 
 #Run the app
-ENTRYPOINT java -jar app.jar
+ENTRYPOINT java -jar -Dspring.profiles.active=docker app.jar
 

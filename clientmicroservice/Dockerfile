@@ -22,5 +22,5 @@ COPY --from=build ./app/target/*.jar ./app.jar
 ARG EUREKA_SERVER=eureka-server
 
 #Run the app
-ENTRYPOINT java -jar app.jar
+ENTRYPOINT java -jar -Dspring.profiles.active=docker app.jar
 

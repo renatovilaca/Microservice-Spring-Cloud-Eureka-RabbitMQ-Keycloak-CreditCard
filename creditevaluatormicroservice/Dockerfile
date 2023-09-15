@@ -23,5 +23,5 @@ ARG RABBITMQ_SERVER=rabbitmq-microservice
 ARG EUREKA_SERVER=eureka-server
 
 #Run the app
-ENTRYPOINT java -jar app.jar
+ENTRYPOINT java -jar -Dspring.profiles.active=docker app.jar
 
